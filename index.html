@@ -1,81 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First HTML Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — Alex Morgan</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1a1a1a;
+      --muted:    #6b6b6b;
+      --rule:     #d8d3cc;
+      --accent:   #2c5f8a;
+      --bg:       #f9f7f4;
+      --white:    #ffffff;
+      --serif:    'DM Serif Display', Georgia, serif;
+      --sans:     'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Page shell ── */
+    .page {
+      max-width: 780px;
+      margin: 48px auto;
+      background: var(--white);
+      box-shadow: 0 2px 24px rgba(0,0,0,.07);
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 1060px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--ink);
+      color: #e8e4de;
+      padding: 48px 28px 48px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 28px;
+      color: #fff;
+      letter-spacing: .02em;
+      flex-shrink: 0;
+    }
+
+    .name-block h1 {
+      font-family: var(--serif);
+      font-size: 26px;
+      line-height: 1.15;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .name-block p {
+      margin-top: 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .s-section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .contact-list li {
+      font-size: 12.5px;
+      color: #c8c4bd;
+    }
+
+    .contact-list li span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 1px;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .skill-list li { font-size: 13px; color: #c8c4bd; }
+
+    .bar-wrap {
+      height: 3px;
+      background: #333;
+      border-radius: 2px;
+      margin-top: 5px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .lang-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .lang-list li {
+      font-size: 13px;
+      color: #c8c4bd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lang-list li em {
+      font-style: normal;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── Main column ── */
+    .main {
+      padding: 48px 40px 48px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* Summary */
+    .summary p {
+      font-size: 14.5px;
+      color: #3a3a3a;
+      line-height: 1.75;
+    }
+
+    /* Experience */
+    .job + .job { margin-top: 24px; }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .job-title {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .job-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .job-company {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .job-dates {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .job-bullets {
+      list-style: none;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .job-bullets li {
+      padding-left: 16px;
+      position: relative;
+      font-size: 13.5px;
+      color: #3a3a3a;
+    }
+
+    .job-bullets li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* Education */
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .edu-degree {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .edu-school {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .edu-year {
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; max-width: 100%; }
+    }
+
+    @media (max-width: 640px) {
+      .page { grid-template-columns: 1fr; margin: 0; }
+      .sidebar { padding: 32px 24px; }
+      .main { padding: 32px 24px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="page">
 
-    <header>
-        <h1>Pokemon</h1>
-        <nav>
-            <a href="#about">About</a> |
-            <a href="#skills">Skills</a> |
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="avatar">
+        <img src="./ash.png" alt="alex" />
+      </div>
 
-    <main>
+      <div class="name-block">
+        <h1>Alex Morgan</h1>
+        <p>Senior Product Designer</p>
+      </div>
 
-        <section id="about">
-            <h2>About Me</h2>
-            <p>
-                I am learning web development using
-                <strong>HTML</strong>, <em>CSS</em>, and JavaScript.
-            </p>
-            <img src="ash.png" alt="My Profile Photo" width="200">
-        </section>
+      <div>
+        <p class="s-section-label">Contact</p>
+        <ul class="contact-list">
+          <li><span>Email</span>alex.morgan@email.com</li>
+          <li><span>Phone</span>+1 (415) 555-0192</li>
+          <li><span>Location</span>San Francisco, CA</li>
+          <li><span>Portfolio</span>alexmorgan.design</li>
+          <li><span>LinkedIn</span>/in/alexmorganux</li>
+        </ul>
+      </div>
 
-        <section id="skills">
-            <h2>Skills</h2>
+      <div>
+        <p class="s-section-label">Skills</p>
+        <ul class="skill-list">
+          <li>
+            Figma / Sketch
+            <div class="bar-wrap"><div class="bar-fill" style="width:95%"></div></div>
+          </li>
+          <li>
+            UX Research
+            <div class="bar-wrap"><div class="bar-fill" style="width:88%"></div></div>
+          </li>
+          <li>
+            Design Systems
+            <div class="bar-wrap"><div class="bar-fill" style="width:85%"></div></div>
+          </li>
+          <li>
+            HTML / CSS
+            <div class="bar-wrap"><div class="bar-fill" style="width:72%"></div></div>
+          </li>
+          <li>
+            Prototyping
+            <div class="bar-wrap"><div class="bar-fill" style="width:90%"></div></div>
+          </li>
+        </ul>
+      </div>
 
-            <h3>Programming Languages</h3>
-            <ul>
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JavaScript</li>
-            </ul>
+      <div>
+        <p class="s-section-label">Languages</p>
+        <ul class="lang-list">
+          <li>English <em>Native</em></li>
+          <li>Spanish <em>Fluent</em></li>
+          <li>French <em>Conversational</em></li>
+        </ul>
+      </div>
+    </aside>
 
-            <h3>Learning Progress</h3>
-            <table border="1">
-                <tr>
-                    <th>Technology</th>
-                    <th>Level</th>
-                </tr>
-                <tr>
-                    <td>HTML</td>
-                    <td>Beginner</td>
-                </tr>
-                <tr>
-                    <td>CSS</td>
-                    <td>Beginner</td>
-                </tr>
-            </table>
-        </section>
+    <!-- ── Main ── -->
+    <main class="main">
 
-        <section id="contact">
-            <h2>Contact Me</h2>
+      <section class="summary">
+        <p class="section-label">Profile</p>
+        <p>Product designer with 7+ years crafting intuitive digital experiences across fintech, healthcare, and SaaS. I bridge research and execution — from early discovery to shipped product — with a focus on reducing friction and building systems that scale with the team.</p>
+      </section>
 
-            <form>
-                <label>Name:</label><br>
-                <input type="text" name="name"><br><br>
+      <section>
+        <p class="section-label">Experience</p>
 
-                <label>Email:</label><br>
-                <input type="email" name="email"><br><br>
+        <div class="job">
+          <div class="job-header">
+            <span class="job-title">Lead Product Designer</span>
+            <div class="job-meta">
+              <div class="job-company">Flux Systems</div>
+              <div class="job-dates">Jan 2022 – Present</div>
+            </div>
+          </div>
+          <ul class="job-bullets">
+            <li>Owned the design of a B2B analytics dashboard used by 40,000+ daily active users, reducing task completion time by 23%.</li>
+            <li>Built and maintained a cross-platform design system (600+ components) adopted by 4 product teams.</li>
+            <li>Led a 5-person design team, introducing structured critique and async handoff workflows.</li>
+          </ul>
+        </div>
 
-                <label>Message:</label><br>
-                <textarea name="message"></textarea><br><br>
+        <div class="job">
+          <div class="job-header">
+            <span class="job-title">Product Designer</span>
+            <div class="job-meta">
+              <div class="job-company">Meridian Health</div>
+              <div class="job-dates">Mar 2019 – Dec 2021</div>
+            </div>
+          </div>
+          <ul class="job-bullets">
+            <li>Redesigned patient onboarding flow, cutting drop-off rate from 41% to 17% within two months of launch.</li>
+            <li>Ran 80+ moderated user interviews and synthesized findings into quarterly roadmap priorities.</li>
+            <li>Collaborated directly with clinical staff to validate designs against real-world care workflows.</li>
+          </ul>
+        </div>
 
-                <button type="submit">Send</button>
-            </form>
-        </section>
+        <div class="job">
+          <div class="job-header">
+            <span class="job-title">UX Designer</span>
+            <div class="job-meta">
+              <div class="job-company">Sparrow Studio</div>
+              <div class="job-dates">Jun 2017 – Feb 2019</div>
+            </div>
+          </div>
+          <ul class="job-bullets">
+            <li>Delivered end-to-end UX for 12 client projects spanning e-commerce, media, and fintech verticals.</li>
+            <li>Introduced usability testing practice into agency workflow, shortening revision cycles by 30%.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-label">Education</p>
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">B.F.A., Interaction Design</div>
+            <div class="edu-school">California College of the Arts</div>
+          </div>
+          <div class="edu-year">2017</div>
+        </div>
+      </section>
 
     </main>
-
-    <footer>
-        <p>&copy; 2026 My Portfolio</p>
-    </footer>
-
+  </div>
 </body>
 </html>
